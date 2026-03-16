@@ -1,0 +1,123 @@
+
+<style>
+.section { margin-bottom: 1.2rem; }
+.section-label { font-size: 11px; font-weight: 500; color: var(--color-text-tertiary); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+.card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 11px 13px; border: 0.5px solid var(--color-border-tertiary); display: flex; gap: 12px; align-items: flex-start; }
+.card + .card { margin-top: 5px; }
+.badge { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+.card-body { flex: 1; }
+.card-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+.card-why { font-size: 12px; color: var(--color-text-secondary); margin-top: 3px; line-height: 1.55; }
+.note { font-size: 11px; color: var(--color-text-tertiary); margin-top: 3px; }
+hr { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 14px 0; }
+</style>
+
+<div style="padding:0.75rem 0">
+
+<div class="section">
+  <div class="section-label">Language</div>
+  <div class="card">
+    <span class="badge" style="background:var(--color-background-info);color:var(--color-text-info)">core</span>
+    <div class="card-body">
+      <div class="card-title">Python (backend) + JavaScript (frontend)</div>
+      <div class="card-why">You already know Python — use it for everything on the server. React uses JS/JSX which is easy to pick up coming from Python. No need to learn a new backend language.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Backend</div>
+  <div class="card">
+    <span class="badge" style="background:var(--color-background-info);color:var(--color-text-info)">core</span>
+    <div class="card-body">
+      <div class="card-title">FastAPI</div>
+      <div class="card-why">The best Python web framework for building APIs. Auto-generates docs at /docs so you can test every endpoint in the browser without any extra tool. Async support built in — important for proxying LLM calls which can be slow.</div>
+      <div class="note">You already know Python. FastAPI will feel natural immediately.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Frontend</div>
+  <div class="card">
+    <span class="badge" style="background:var(--color-background-info);color:var(--color-text-info)">core</span>
+    <div class="card-body">
+      <div class="card-title">React + Vite</div>
+      <div class="card-why">React for the dashboard UI — components, state, API calls. Vite as the dev server: starts in under a second, no config needed. Skip Next.js — it adds SSR complexity you don't need this week.</div>
+    </div>
+  </div>
+  <div class="card">
+    <span class="badge" style="background:var(--color-background-warning);color:var(--color-text-warning)">also use</span>
+    <div class="card-body">
+      <div class="card-title">TailwindCSS + shadcn/ui</div>
+      <div class="card-why">Tailwind for styling without writing CSS files. shadcn/ui gives you pre-built components (tables, forms, charts) that look professional out of the box. Your dashboard will look great without design work.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Database</div>
+  <div class="card">
+    <span class="badge" style="background:var(--color-background-info);color:var(--color-text-info)">core</span>
+    <div class="card-body">
+      <div class="card-title">PostgreSQL + SQLAlchemy + Alembic</div>
+      <div class="card-why">PostgreSQL is the best open-source relational DB — handles users, keys, roles, usage logs perfectly. SQLAlchemy is Python's most popular ORM — write Python classes instead of raw SQL. Alembic handles DB migrations (when you change your schema, it updates the DB safely).</div>
+      <div class="note">Your SQL knowledge transfers directly. SQLAlchemy just wraps it in Python.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Cache + Rate limiting</div>
+  <div class="card">
+    <span class="badge" style="background:var(--color-background-info);color:var(--color-text-info)">core</span>
+    <div class="card-body">
+      <div class="card-title">Redis</div>
+      <div class="card-why">Stores rate limit counters per user — e.g. "user X has made 47 requests this minute". Much faster than hitting PostgreSQL on every single API call. Also stores sessions.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Auth</div>
+  <div class="card">
+    <span class="badge" style="background:var(--color-background-info);color:var(--color-text-info)">core</span>
+    <div class="card-body">
+      <div class="card-title">Google OAuth + python-jose (JWT)</div>
+      <div class="card-why">Google OAuth handles the login flow — users click "Sign in with Google", Google confirms identity, your backend gets their email. python-jose creates signed JWT tokens your frontend uses on every request to prove who they are.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Encryption</div>
+  <div class="card">
+    <span class="badge" style="background:var(--color-background-info);color:var(--color-text-info)">core</span>
+    <div class="card-body">
+      <div class="card-title">cryptography (Python library)</div>
+      <div class="card-why">Used to encrypt provider API keys before saving to DB (AES-256). One of the most trusted crypto libraries in Python. Simple API — encrypt before save, decrypt before use.</div>
+    </div>
+  </div>
+</div>
+
+<hr/>
+
+<div class="section">
+  <div class="section-label">Infrastructure</div>
+  <div class="card">
+    <span class="badge" style="background:var(--color-background-success);color:var(--color-text-success)">deploy</span>
+    <div class="card-body">
+      <div class="card-title">Docker + Docker Compose</div>
+      <div class="card-why">One Dockerfile each for backend and frontend. Docker Compose ties everything together — backend + frontend + PostgreSQL + Redis all start with one command. Same setup works locally and in the cloud.</div>
+    </div>
+  </div>
+  <div class="card">
+    <span class="badge" style="background:var(--color-background-success);color:var(--color-text-success)">deploy</span>
+    <div class="card-body">
+      <div class="card-title">Railway (cloud hosting)</div>
+      <div class="card-why">The easiest platform to deploy a Docker project in 2025. Connect your GitHub repo, it detects Docker Compose, deploys everything. Free tier works for this project. No AWS complexity needed on week 1.</div>
+    </div>
+  </div>
+</div>
+
+</div>
