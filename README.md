@@ -51,4 +51,8 @@ Projects Structure:
 
 # Tech Stack
 
-[text](Architecture_images/recommended_techstack.html)
+![alt text](Architecture_images/recommended_techstack.html)
+
+# File Stack
+
+![alt text](Architecture_images/project_file_structure.html)
