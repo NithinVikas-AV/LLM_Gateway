@@ -1,6 +1,6 @@
 # API_Management_Platform
 
-Projects Structure:
+# Projects Structure:
 
 ![alt text](Architecture_images/llm_gateway_architecture.svg)
 
@@ -51,8 +51,8 @@ Projects Structure:
 
 # Tech Stack
 
-![alt text](Architecture_images/recommended_techstack.html)
+![Architecture_images/recommended_techstack.png](Architecture_images/recommended_techstack.png)
 
 # File Stack
 
-![alt text](Architecture_images/project_file_structure.html)
+![Architecture_images/project_file_structure.png](Architecture_images/project_file_structure.png)
