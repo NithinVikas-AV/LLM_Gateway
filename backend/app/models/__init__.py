@@ -1,4 +1,5 @@
 # SQLAlchemy DB table definitions
+#  import all models — Alembic needs to see them all in one place.
 
 from app.models.user import User
 from app.models.provider_key import ProviderKey
