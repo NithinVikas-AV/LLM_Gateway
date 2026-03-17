@@ -3,5 +3,5 @@
 
 from sqlalchemy.orm import DeclarativeBase
 
-class Beta(DeclarativeBase):
+class Base(DeclarativeBase):
     pass
