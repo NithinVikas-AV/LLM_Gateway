@@ -22,4 +22,4 @@ class UsageLog(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User", back_populates="usage_logs")
-    universal_key = relationship("Universal_Key", back_populates="usage_logs")
+    universal_key = relationship("UniversalKey", back_populates="usage_logs")
