@@ -112,3 +112,11 @@ Copy the Client ID and Client Secret into your .env
 
 # How RateLimiting Works
 ![alt text](Architecture_images/rate_limit_flow.svg)
+
+* Make sure Redis is running locally. If you don't have it installed:
+* Windows — download from https://github.com/microsoftarchive/redis/releases
+*  or run via Docker:
+* docker run -d -p 6379:6379 redis
+
+# Gateway Proxy Flow
+![alt text](Architecture_images/gateway_proxy_flow.svg)
