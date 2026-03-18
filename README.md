@@ -1,4 +1,10 @@
-# API_Management_Platform
+# LLM_Gateway
+
+# Project Idea:
+
+We are gonna build a LLM Gateway where users can store their own AI model API keys securely and get a universal key to access all these models safely ensuring no malicious inputs are passed using Guardrails. 
+
+The main purpose of this project is to learn about the workings of Authentication, Authorization, Frontend, Backend, Database, Docker, API & Endpoint, Modularity of files along with Deployment.
 
 # Projects Structure:
 
@@ -56,3 +62,38 @@
 # File Stack
 
 ![Architecture_images/project_file_structure.png](Architecture_images/project_file_structure.png)
+
+# DB Schema
+
+[text](Architecture_images/db_schema_erd.html)
+
+* users — created automatically the first time someone logs in with Google. The role field is a string: "admin" or "employee". picture stores the Google profile photo URL for the dashboard.
+* provider_keys — one row per provider per user. So if a user adds both OpenAI and Gemini, that's 2 rows. The raw key is never stored — only encrypted_key (AES-256 ciphertext) and iv (the initialization vector needed to decrypt it). These two together are what you need to reverse the encryption.
+* universal_keys — the key your employees actually use in their apps. It maps back to the user who owns it. key_hash stores a hashed version of the key for fast lookup without storing it plain. A user can have multiple universal keys — one per project for example.
+* key_permissions — this is where RBAC gets granular. Each universal key has its own limits: which models it can access, requests per minute, daily token budget, monthly cost cap. This is what makes your gateway powerful.
+* usage_logs — every single API call through your gateway writes one row here. This is your audit trail, your billing data, and your analytics source all in one. Never delete from this table — it's append-only.
+
+
+# Packages and its Uses for this Projects:
+
+Package             Purpose
+fastapi             The web framework
+uvicorn             The server that runs FastAPI
+sqlalchemy          ORM — talk to PostgreSQL in Python
+alembic             DB migrations
+psycopg2-binary     PostgreSQL driver (SQLAlchemy needs this)
+python-dotenv       Load your .env file
+cryptography        AES-256 encrypt/decrypt provider keys
+python-jose         Create and verify JWT tokens
+passlib             Password hashing utilities
+httpx               Make async HTTP calls to OpenAI/Gemini
+
+# Run Alembic to actually create these tables in your pgAdmin database: 
+* Inside backend/ with venv activated (ensure .env file is inside) - This created a alembic folder inside backend.
+alembic init alembic
+* After changes in env.py run this - this is to create all the 5 tables in the DB.
+alembic revision --autogenerate -m "initial tables"
+alembic upgrade head
+
+# What is happening in the Google Auth
+![alt text](Architecture_images/google_oauth_flow.svg)
