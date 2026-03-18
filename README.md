@@ -97,3 +97,18 @@ alembic upgrade head
 
 # What is happening in the Google Auth
 ![alt text](Architecture_images/google_oauth_flow.svg)
+
+# Get Google OAuth credentials:
+Before writing code, you need to get your Google credentials. Do this first:
+
+Go to console.cloud.google.com
+Create a new project → name it llm-gateway
+Go to APIs & Services → OAuth consent screen → choose External → fill in app name and your email
+Go to APIs & Services → Credentials → Create Credentials → OAuth 2.0 Client ID
+Choose Web application
+Add http://localhost:8000 to Authorized origins
+Add http://localhost:8000/auth/callback to Authorized redirect URIs
+Copy the Client ID and Client Secret into your .env
+
+# How RateLimiting Works
+![alt text](Architecture_images/rate_limit_flow.svg)
