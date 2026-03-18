@@ -1,5 +1,5 @@
 # loads .env variables - This reads every value from your .env file automatically
-# Any other file that needs a config value just does from app.core.config import settings
+# Any other file that needs a config value just does from app.core.config import settings.
 
 from pydantic_settings import BaseSettings
 
