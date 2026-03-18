@@ -12,6 +12,8 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_ID: str
     GOOGLE_CLIENT_SECRET: str
     REDIS_URL: str = "redis://localhost:6379"
+    GEMINI_API_KEY: str = ""
+    GROQ_API_KEY: str = ""
 
     class Config:
         env_file = ".env"
