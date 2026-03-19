@@ -26,6 +26,25 @@ MODEL_PROVIDER_MAP = {
     "llama-3.3-70b-versatile":"groq",
 }
 
+# Add this list at the top of gateway_service.py
+BLOCKED_KEYWORDS = [
+    "ignore previous instructions",
+    "ignore all instructions",
+    "jailbreak",
+    "dan mode",
+    "pretend you are",
+]
+
+def check_guardrails(messages: list):
+    for msg in messages:
+        content_lower = msg.content.lower()
+        for keyword in BLOCKED_KEYWORDS:
+            if keyword in content_lower:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Request blocked by input guardrails"
+                )
+
 def get_provider_for_model(model: str) -> str:
     provider = MODEL_PROVIDER_MAP.get(model)
     if not provider:
@@ -115,6 +134,9 @@ async def process_gateway_request(
 ) -> GatewayResponse:
     
     provider = get_provider_for_model(request.model)
+
+    # 0. Guardrails first — before anything else
+    check_guardrails(request.messages)
 
     # 1. Run all rate limit checks before doing anything
     check_and_increment_rpm(str(universal_key.id), request.model, db)
