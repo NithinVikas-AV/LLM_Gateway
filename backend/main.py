@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
-from app.api import auth, keys, usage
+from app.api import auth, keys, usage, gateway
 from app.core.config import settings
 
 app = FastAPI(title="LLM Gateway", version="1.0.0")
@@ -9,6 +9,7 @@ app = FastAPI(title="LLM Gateway", version="1.0.0")
 app.include_router(auth.router)
 app.include_router(keys.router)
 app.include_router(usage.router)
+app.include_router(gateway.router)
 
 # Session middleware - required for Oauth redirect flow
 app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
