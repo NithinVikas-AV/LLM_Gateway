@@ -120,3 +120,11 @@ Copy the Client ID and Client Secret into your .env
 
 # Gateway Proxy Flow
 ![alt text](Architecture_images/gateway_proxy_flow.svg)
+
+# Evertime when logged in
+0. The flow every time you restart:
+1. Go to http://localhost:8000/auth/google
+2. Log in with Google
+3. Copy the token from the redirect URL
+4. Paste it in the Authorize button in /docs
+5. Now all your saved keys are accessible again
