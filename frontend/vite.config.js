@@ -38,7 +38,8 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     proxy: {
-      '/auth': 'http://backend:8000',
+      '/auth/google': 'http://backend:8000',
+      '/auth/callback': 'http://backend:8000',
       '/keys': 'http://backend:8000',
       '/gateway': 'http://backend:8000',
       '/usage': 'http://backend:8000',
