@@ -128,3 +128,36 @@ Copy the Client ID and Client Secret into your .env
 3. Copy the token from the redirect URL
 4. Paste it in the Authorize button in /docs
 5. Now all your saved keys are accessible again
+
+# Frontend Basics:
+![alt text](Architecture_images/FE-1.png)
+![alt text](Architecture_images/FE-2.png)
+
+```
+cd frontend
+npm create vite@latest . -- --template react
+```
+
+```
+npm install
+npm install react-router-dom axios zustand
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+```
+npx shadcn@latest init
+
+Component library: Radix
+Preset: Nova
+Base color: Slate
+CSS variables: Yes
+```
+
+```
+npx shadcn@latest add button card input label table badge tabs
+```
+
+```
+npm install -D @types/node
+npm install lucide-react recharts
+```
