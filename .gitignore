@@ -1,14 +1,11 @@
-backend/.env
-backend/venv
-backend/test_security.py
-backend/__pycache__/
-backend/app/api/__pycache__/
-backend/app/core/__pycache__/
-backend/app/db/__pycache__/
-backend/app/models/__pycache__/
-backend/app/schemas/__pycache__/
-backend/app/services/__pycache__/
+# Environment
+.env
+.env.*
 
-backend/app/api/__init__.py
-backend/app/schemas/auth.py
-backend/app/schemas/usage.py
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
