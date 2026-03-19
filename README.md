@@ -65,7 +65,7 @@ The main purpose of this project is to learn about the workings of Authenticatio
 
 # DB Schema
 
-[text](Architecture_images/db_schema_erd.html)
+![alt text](Architecture_images/db_schema_erd.png)
 
 * users — created automatically the first time someone logs in with Google. The role field is a string: "admin" or "employee". picture stores the Google profile photo URL for the dashboard.
 * provider_keys — one row per provider per user. So if a user adds both OpenAI and Gemini, that's 2 rows. The raw key is never stored — only encrypted_key (AES-256 ciphertext) and iv (the initialization vector needed to decrypt it). These two together are what you need to reverse the encryption.
