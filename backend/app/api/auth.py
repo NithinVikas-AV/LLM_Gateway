@@ -9,6 +9,7 @@ from app.db.session import get_db
 from app.core.config import settings
 from app.core.security import create_access_token
 from app.models.user import User
+from app.core.dependencies import get_current_user
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -69,5 +70,11 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
     )
 
 @router.get("/me", operation_id="get_current_user_me")
-async def get_me(db: Session = Depends(get_db)):
-    pass # we'll wire this up with get_current_user next step
+async def get_me(current_user: User = Depends(get_current_user)):
+    return {
+        "id": str(current_user.id),
+        "email": current_user.email,
+        "name": current_user.name,
+        "picture": current_user.picture,
+        "role": current_user.role,
+    }
