@@ -164,3 +164,42 @@ npm install lucide-react recharts
 
 # Docker Architecture:
 ![alt text](Architecture_images/docker_compose_architecture.svg)
+
+# From llm-gateway/ root
+docker compose up --build
+```
+First build takes 3-5 minutes (downloading images, installing packages). After that subsequent starts are fast.
+
+You should see logs from all 4 containers streaming together. When you see:
+```
+llmgateway-backend  | INFO: Application startup complete.
+llmgateway-frontend | VITE ready in 300ms
+
+# Useful Docker commands to know:
+
+### Start everything
+docker compose up
+
+### Start in background
+docker compose up -d
+
+### Stop everything
+docker compose down
+
+### Stop and delete all data (fresh start)
+docker compose down -v
+
+### See logs of one service
+docker compose logs backend -f
+
+### Restart just one service
+docker compose restart backend
+
+### Run a command inside a container
+docker compose exec backend bash
+
+### Stop but keep data
+docker compose down
+
+### Stop and delete all data (fresh start)
+docker compose down -v
