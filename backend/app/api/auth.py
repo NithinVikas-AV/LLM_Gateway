@@ -26,12 +26,12 @@ oauth.register(
     client_kwargs={"scope": "openid email profile"},
 )
 
-@router.get("/google")
+@router.get("/google", operation_id="google_login")
 async def login_with_google(request: Request):
     redirect_url = "http://localhost:8000/auth/callback"
     return await oauth.google.authorize_redirect(request, redirect_url)
 
-@router.get("/callback")
+@router.get("/callback", operation_id="google_callback")
 async def google_callback(request: Request, db: Session = Depends(get_db)):
     try:
         token = await oauth.google.authorize_access_token(request)
@@ -68,6 +68,6 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
         url=f"http://localhost:5173/auth/success?token={access_token}"
     )
 
-@router.get("/me")
+@router.get("/me", operation_id="get_current_user_me")
 async def get_me(db: Session = Depends(get_db)):
     pass # we'll wire this up with get_current_user next step
