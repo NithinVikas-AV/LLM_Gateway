@@ -8,3 +8,7 @@ backend/app/db/__pycache__/
 backend/app/models/__pycache__/
 backend/app/schemas/__pycache__/
 backend/app/services/__pycache__/
+
+backend/app/api/__init__.py
+backend/app/schemas/auth.py
+backend/app/schemas/usage.py
