@@ -203,3 +203,6 @@ docker compose down
 
 ### Stop and delete all data (fresh start)
 docker compose down -v
+
+# What you learned in this Porject:
+![alt text](Architecture_images/what_you_learned.svg)
