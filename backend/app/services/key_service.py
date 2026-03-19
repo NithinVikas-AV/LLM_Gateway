@@ -116,7 +116,7 @@ def get_universal_keys(db: Session, user: User) -> list[UniversalKey]:
     return db.query(UniversalKey).filter(
         UniversalKey.user_id == user.id,
         UniversalKey.is_active == True
-    ).first()
+    ).all()
 
 
 def revoke_universal_key(db: Session, user: User, key_id):
