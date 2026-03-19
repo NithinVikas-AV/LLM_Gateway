@@ -161,3 +161,6 @@ npx shadcn@latest add button card input label table badge tabs
 npm install -D @types/node
 npm install lucide-react recharts
 ```
+
+# Docker Architecture:
+![alt text](Architecture_images/docker_compose_architecture.svg)
