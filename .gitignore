@@ -9,6 +9,3 @@ Thumbs.db
 # Editor
 .vscode/
 .idea/
-
-docker-compose.yml
-backend/Dockerfile
