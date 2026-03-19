@@ -8,12 +8,8 @@ from uuid import UUID
 
 # Pricing per 1000 tokens (update these as providers change pricing)
 MODEL_PRICING = {
-    "gpt-4o":           {"input": 0.005,  "output": 0.015},
-    "gpt-4o-mini":      {"input": 0.00015,"output": 0.0006},
-    "gpt-3.5-turbo":    {"input": 0.0005, "output": 0.0015},
-    "gemini-pro":       {"input": 0.00025,"output": 0.0005},
-    "gemini-1.5-flash": {"input": 0.000075,"output": 0.0003},
-    "claude-3-haiku":   {"input": 0.00025,"output": 0.00125},
+    "gemini-2.5-flash":         {"input": 0.00015, "output": 0.0006},
+    "llama-3.3-70b-versatile":  {"input": 0.00006, "output": 0.00008},
 }
 
 def calculate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
@@ -58,28 +54,34 @@ def get_monthly_summary(db: Session, user_id: UUID) -> dict:
     current_year = datetime.utcnow().year
 
     results = db.query(
+        UsageLog.model.label("model"),          # label this too
         func.sum(UsageLog.input_tokens).label("total_input"),
         func.sum(UsageLog.output_tokens).label("total_output"),
         func.sum(UsageLog.cost).label("total_cost"),
-        func.count(UsageLog.id).label(("total_calls"))
+        func.count(UsageLog.id).label("total_calls")
     ).filter(
         UsageLog.user_id == user_id,
         extract("month", UsageLog.created_at) == current_month,
         extract("year", UsageLog.created_at) == current_year
     ).group_by(UsageLog.model).all()
 
+    by_model = []
+    total = 0.0
+
+    for r in results:
+        cost = float(r.total_cost or 0)
+        total += cost
+        by_model.append({
+            "model": r.model,
+            "total_input_tokens": r.total_input or 0,
+            "total_output_tokens": r.total_output or 0,
+            "total_cost_usd": round(cost, 4),
+            "total_calls": r.total_calls or 0
+        })
+
     return {
         "month": current_month,
         "year": current_year,
-        "by_model": [
-            {
-                "model": r.model,
-                "total_input_tokens": r.total_input,
-                "total_output_tokens": r.total_output,
-                "total_cost_usd": round(r.total_cost, 4),
-                "total_calls": r.total_calls
-            }
-            for r in results
-        ],
-        "total_cost_usd": round(sum(r.total_cost for r in results), 4)
+        "by_model": by_model,
+        "total_cost_usd": round(total, 4)
     }
