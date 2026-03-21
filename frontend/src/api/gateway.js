@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = typeof process !== 'undefined' && process.env.NODE_ENV === 'production'
+const API_URL = import.meta.env.PROD
   ? 'https://llmgateway-production.up.railway.app'
   : ''
 

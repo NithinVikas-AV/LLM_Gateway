@@ -1,7 +1,7 @@
 import axios from 'axios'
 import useAuthStore from '../store/authStore'
 
-const API_URL = typeof process !== 'undefined' && process.env.NODE_ENV === 'production'
+const API_URL = import.meta.env.PROD
   ? 'https://llmgateway-production.up.railway.app'
   : ''
 
