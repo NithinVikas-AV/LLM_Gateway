@@ -4,7 +4,7 @@
 
 We are gonna build a LLM Gateway where users can store their own AI model API keys securely and get a universal key to access all these models safely ensuring no malicious inputs are passed using Guardrails.
 
-The main purpose of this project is to learn about the workings of Authentication, Authorization, Frontend, Backend, Database, Docker, API & Endpoint, Modularity of files along with Deployment.
+The main purpose of this project is to learn about the workings of Authentication, Authorization, Frontend, Backend, Database, Docker, API & Endpoint, Modularity of files, Role Based Access Control, Quota-Based Access Control (QBAC) along with Deployment and CI/CD Pipeline.
 
 # Projects Structure:
 ![alt text](Architecture_images/llm_gateway_architecture.svg)
