@@ -145,14 +145,14 @@ def lookup_universal_key(db: Session, raw_key: str) -> UniversalKey | None:
 # -- Key Permissions ------------------------------
 
 def set_key_permission(
-        db: Session,
-        universal_key_id,
-        data: KeyPermissionCreate
+    db: Session,
+    universal_key_id,
+    data: KeyPermissionCreate
 ) -> KeyPermission:
     existing = db.query(KeyPermission).filter(
         KeyPermission.universal_key_id == universal_key_id,
         KeyPermission.model == data.model
-    )
+    ).first()                    # ← add .first() here
 
     if existing:
         existing.rpm_limit = data.rpm_limit
@@ -161,7 +161,7 @@ def set_key_permission(
         db.commit()
         db.refresh(existing)
         return existing
-    
+
     permission = KeyPermission(
         universal_key_id=universal_key_id,
         model=data.model,
