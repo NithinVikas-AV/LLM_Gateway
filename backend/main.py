@@ -21,7 +21,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "https://llmgateway-production.up.railway.app",
-        "https://your-frontend-railway-url.up.railway.app"  # add after you get it
+        "https://llmgateway-production-e66c.up.railway.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
