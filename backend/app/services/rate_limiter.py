@@ -15,21 +15,27 @@ from app.core.redis_client import get_redis
 def _rpm_key(universal_key_id: str) -> str:
     return f"ratelimit:{universal_key_id}:rpm"
 
-def _dailt_tokens_key(universal_key_id: str, model: str) -> str:
+def _daily_tokens_key(universal_key_id: str, model: str) -> str:
     return f"ratelimit:{universal_key_id}:{model}:daily_tokens"
 
 def check_and_increment_rpm(universal_key_id: str, model: str, db: Session):
     r: Redis = get_redis()
 
-    # Get the permission for this key + model
     permission = db.query(KeyPermission).filter(
         KeyPermission.universal_key_id == universal_key_id,
         KeyPermission.model == model
     ).first()
 
-    # If no permission set, use defaults
-    rpm_limit = permission.rpm_limit if permission else 60
+    # None = unlimited — skip check entirely
+    if permission and permission.rpm_limit is None:
+        key = _rpm_key(str(universal_key_id))
+        pipe = r.pipeline()
+        pipe.incr(key)
+        pipe.expire(key, 60)
+        pipe.execute()
+        return
 
+    rpm_limit = permission.rpm_limit if permission else 60
     key = _rpm_key(str(universal_key_id))
     current = r.get(key)
     current_count = int(current) if current else 0
@@ -39,12 +45,12 @@ def check_and_increment_rpm(universal_key_id: str, model: str, db: Session):
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
             detail=f"Rate limit exceeded: {rpm_limit} requests/minute for model {model}"
         )
-    
-    # Increment and set TTL of 60 seconds if first request
+
     pipe = r.pipeline()
     pipe.incr(key)
     pipe.expire(key, 60)
     pipe.execute()
+
 
 def check_daily_token_limit(universal_key_id: str, model: str, db: Session):
     r: Redis = get_redis()
@@ -54,9 +60,12 @@ def check_daily_token_limit(universal_key_id: str, model: str, db: Session):
         KeyPermission.model == model
     ).first()
 
-    daily_limit = permission.daily_token_limit if permission else 100000
+    # None = unlimited — skip check
+    if permission and permission.daily_token_limit is None:
+        return
 
-    key = _dailt_tokens_key(str(universal_key_id), model)
+    daily_limit = permission.daily_token_limit if permission else 100000
+    key = _daily_tokens_key(str(universal_key_id), model)
     current = r.get(key)
     current_tokens = int(current) if current else 0
 
@@ -65,15 +74,7 @@ def check_daily_token_limit(universal_key_id: str, model: str, db: Session):
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
             detail=f"Daily token limit of {daily_limit} exceeded for model {model}"
         )
-    
-def increment_token_usage(universal_key_id: str, model: str, tokens_used: int):
-    r: Redis = get_redis()
-    key = _dailt_tokens_key(str(universal_key_id), model)
 
-    pipe = r.pipeline()
-    pipe.incrby(key, tokens_used)
-    pipe.expire(key, 86400) # 24 hours TTL
-    pipe.execute()
 
 def check_monthly_cost_limit(universal_key_id: str, model: str, db: Session):
     permission = db.query(KeyPermission).filter(
@@ -81,13 +82,12 @@ def check_monthly_cost_limit(universal_key_id: str, model: str, db: Session):
         KeyPermission.model == model
     ).first()
 
-    if not permission:
-        return # no limit set, allow
-    
-    # Sum this month's cost from usage_logs
+    # None = unlimited — skip check
+    if not permission or permission.monthly_cost_limit is None:
+        return
+
     from sqlalchemy import func, extract
     from datetime import datetime
-    from app.models.usage_log import UsageLog
 
     current_month = datetime.utcnow().month
     current_year = datetime.utcnow().year
@@ -102,5 +102,45 @@ def check_monthly_cost_limit(universal_key_id: str, model: str, db: Session):
     if monthly_cost >= permission.monthly_cost_limit:
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-            detail=f"Monthly cost limit of ${permission.monthly_cost_limit} execeeded"
+            detail=f"Monthly cost limit of ${permission.monthly_cost_limit} exceeded"
+        )
+    
+def increment_token_usage(universal_key_id: str, model: str, tokens_used: int):
+    r: Redis = get_redis()
+    key = _daily_tokens_key(str(universal_key_id), model)
+
+    pipe = r.pipeline()
+    pipe.incrby(key, tokens_used)
+    pipe.expire(key, 86400) # 24 hours TTL
+    pipe.execute()
+
+def check_monthly_cost_limit(universal_key_id: str, model: str, db: Session):
+    permission = db.query(KeyPermission).filter(
+        KeyPermission.universal_key_id == universal_key_id,
+        KeyPermission.model == model
+    ).first()
+
+    # No permission or unlimited — skip
+    if not permission or permission.monthly_cost_limit is None:
+        return
+
+    from sqlalchemy import func, extract
+    from datetime import datetime
+    from app.models.usage_log import UsageLog
+
+    current_month = datetime.utcnow().month
+    current_year = datetime.utcnow().year
+
+    monthly_cost = db.query(func.sum(UsageLog.cost)).filter(
+        UsageLog.universal_key_id == universal_key_id,
+        UsageLog.model == model,
+        extract("month", UsageLog.created_at) == current_month,
+        extract("year", UsageLog.created_at) == current_year
+    ).scalar() or 0.0
+
+    # Only compare if monthly_cost_limit is actually a number
+    if permission.monthly_cost_limit is not None and monthly_cost >= permission.monthly_cost_limit:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"Monthly cost limit of ${permission.monthly_cost_limit} exceeded"
         )
