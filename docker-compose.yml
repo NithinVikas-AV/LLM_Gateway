@@ -12,28 +12,28 @@ services:
     # environment:
     #   - DATABASE_URL=postgresql://postgres:postgres@db:5432/llmgateway
     #   - REDIS_URL=redis://redis:6379
-    depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_started
+    # depends_on:
+    #   db:
+    #     condition: service_healthy
+    #   redis:
+    #     condition: service_started
     volumes:
       - ./backend:/app
     networks:
       - llmgateway-network
 
-  # frontend:
-  #   build: ./frontend
-  #   container_name: llmgateway-frontend
-  #   ports:
-  #     - "5173:5173"
-  #   volumes:
-  #     - ./frontend:/app
-  #     - /app/node_modules
-  #   depends_on:
-  #     - backend
-  #   networks:
-  #     - llmgateway-network
+  frontend:
+    build: ./frontend
+    container_name: llmgateway-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - llmgateway-network
 
   # db:
   #   image: postgres:15-alpine
@@ -64,9 +64,9 @@ services:
   #   networks:
   #     - llmgateway-network
 
-volumes:
-  postgres_data:
-  redis_data:
+# volumes:
+#   postgres_data:
+#   redis_data:
 
 networks:
   llmgateway-network:
