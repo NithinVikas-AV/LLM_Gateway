@@ -1,13 +1,9 @@
-# Environment
 .env
 .env.*
-
-# OS
+venv/
+node_modules/
+__pycache__/
+*.pyc
+dist/
 .DS_Store
 Thumbs.db
-
-# Editor
-.vscode/
-.idea/
-
-Planning.txt
