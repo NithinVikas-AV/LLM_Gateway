@@ -10,8 +10,8 @@ class KeyPermission(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     universal_key_id = Column(UUID(as_uuid=True), ForeignKey("universal_keys.id"), nullable=False)
     model = Column(String, nullable=False)
-    rpm_limit = Column(Integer, default=60)
-    daily_token_limit = Column(Integer, default=100000)
-    monthly_cost_limit = Column(Float, default=10.0)
+    rpm_limit = Column(Integer, default=None)
+    daily_token_limit = Column(Integer, default=None)
+    monthly_cost_limit = Column(Float, default=None)
 
     universal_key = relationship("UniversalKey", back_populates="permissions")
