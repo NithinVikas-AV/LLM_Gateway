@@ -29,10 +29,10 @@ oauth.register(
     client_kwargs={"scope": "openid email profile"},
 )
 
-@router.get("/google", operation_id="google_login")
+@router.get("/google")
 async def login_with_google(request: Request):
-    redirect_url = "http://localhost:8000/auth/callback"
-    return await oauth.google.authorize_redirect(request, redirect_url)
+    redirect_uri = "https://llmgateway-production.up.railway.app/auth/callback"
+    return await oauth.google.authorize_redirect(request, redirect_uri)
 
 @router.get("/callback", operation_id="google_callback")
 async def google_callback(request: Request, db: Session = Depends(get_db)):
@@ -68,7 +68,7 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
 
     # Redirect to frontend with token in URL
     return RedirectResponse(
-        url=f"http://localhost:5173/auth/success?token={access_token}"
+        url=f"http://llmgateway-production-e66c.up.railway.app/auth/success?token={access_token}"
     )
 
 @router.get("/me", operation_id="get_current_user_me")
