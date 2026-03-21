@@ -294,5 +294,11 @@ docker compose up --build
     docker compose down -v
 ```
 
+# Deployment Architecture:
+![alt text](Architecture_images/deployment_architecture.svg)
+
+# CI/CD Pipeline Flow:
+![alt text](Architecture_images/cicd_flow.svg)
+
 # Learning from this Project:
-![alt text](Architecture_images/what_you_learned.svg)
+![alt text](Architecture_images/full_learning_map.svg)
