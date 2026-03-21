@@ -9,9 +9,9 @@ services:
       - "8000:8000"
     env_file:
       - ./backend/.env
-    environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/llmgateway
-      - REDIS_URL=redis://redis:6379
+    # environment:
+    #   - DATABASE_URL=postgresql://postgres:postgres@db:5432/llmgateway
+    #   - REDIS_URL=redis://redis:6379
     depends_on:
       db:
         condition: service_healthy
@@ -22,47 +22,47 @@ services:
     networks:
       - llmgateway-network
 
-  frontend:
-    build: ./frontend
-    container_name: llmgateway-frontend
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    depends_on:
-      - backend
-    networks:
-      - llmgateway-network
+  # frontend:
+  #   build: ./frontend
+  #   container_name: llmgateway-frontend
+  #   ports:
+  #     - "5173:5173"
+  #   volumes:
+  #     - ./frontend:/app
+  #     - /app/node_modules
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - llmgateway-network
 
-  db:
-    image: postgres:15-alpine
-    container_name: llmgateway-db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: llmgateway
-    ports:
-      - "5433:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    networks:
-      - llmgateway-network
+  # db:
+  #   image: postgres:15-alpine
+  #   container_name: llmgateway-db
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: llmgateway
+  #   ports:
+  #     - "5433:5432"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
+  #   networks:
+  #     - llmgateway-network
 
-  redis:
-    image: redis:7-alpine
-    container_name: llmgateway-redis
-    ports:
-      - "6380:6379"
-    volumes:
-      - redis_data:/data
-    networks:
-      - llmgateway-network
+  # redis:
+  #   image: redis:7-alpine
+  #   container_name: llmgateway-redis
+  #   ports:
+  #     - "6380:6379"
+  #   volumes:
+  #     - redis_data:/data
+  #   networks:
+  #     - llmgateway-network
 
 volumes:
   postgres_data:
