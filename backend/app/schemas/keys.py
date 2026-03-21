@@ -41,16 +41,16 @@ class UniversalKeyResponse(BaseModel):
 
 class KeyPermissionCreate(BaseModel):
     model: str
-    rpm_limit: int = 60
-    daily_token_limit: int = 100000
-    monthly_cost_limit: float = 10.0
+    rpm_limit: Optional[int] = None
+    daily_token_limit: Optional[int] = None
+    monthly_cost_limit: Optional[int] = None
 
 class KeyPermissionResponse(BaseModel):
     id: UUID
     model: str
-    rpm_limit: int
-    daily_token_limit: int
-    monthly_cost_limit: float
+    rpm_limit: Optional[int] = None
+    daily_token_limit: Optional[int] = None
+    monthly_cost_limit: Optional[int] = None
 
     class Config:
         from_attributes = True
