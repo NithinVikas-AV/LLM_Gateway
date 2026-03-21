@@ -1,11 +1,14 @@
 import axios from 'axios'
 import useAuthStore from '../store/authStore'
 
+const API_URL = typeof process !== 'undefined' && process.env.NODE_ENV === 'production'
+  ? 'https://llmgateway-production.up.railway.app'
+  : ''
+
 const api = axios.create({
-  baseURL: '/',
+  baseURL: API_URL,
 })
 
-// Automatically attach JWT to every request
 api.interceptors.request.use((config) => {
   const token = useAuthStore.getState().token
   if (token) {
@@ -14,7 +17,6 @@ api.interceptors.request.use((config) => {
   return config
 })
 
-// If token expired, log out automatically
 api.interceptors.response.use(
   (response) => response,
   (error) => {
