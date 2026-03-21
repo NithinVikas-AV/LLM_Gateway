@@ -1,6 +1,6 @@
 import requests
 
-UNIVERSAL_KEY = "llmgw-gp6aSQ7bUH0dGnnF93JN940bprI7cLn_TlvmeuW0XEY"
+UNIVERSAL_KEY = "llmgw-V0PEy0H77383-ihox-dUxj5-mJElxI7__2we_oQKq2w"
 BASE_URL = "https://llmgateway-production.up.railway.app"
 
 response = requests.post(
