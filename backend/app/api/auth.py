@@ -68,7 +68,7 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
 
     # Redirect to frontend with token in URL
     return RedirectResponse(
-        url=f"http://llmgateway-production-e66c.up.railway.app/auth/success?token={access_token}"
+        url=f"https://llmgateway-production-e66c.up.railway.app/auth/success?token={access_token}"
     )
 
 @router.get("/me", operation_id="get_current_user_me")
