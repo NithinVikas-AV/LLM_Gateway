@@ -13,14 +13,14 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
     proxy: {
-      '/auth/google': 'http://backend:8000',
-      '/auth/callback': 'http://backend:8000',
-      '/auth/me': 'http://backend:8000',
-      '/keys': 'http://backend:8000',
-      '/gateway': 'http://backend:8000',
-      '/usage': 'http://backend:8000',
-      '/users': 'http://backend:8000',
-      '/admin': 'http://backend:8000',
+      '/auth/google': 'https://llmgateway-production.up.railway.app',
+      '/auth/callback': 'https://llmgateway-production.up.railway.app',
+      '/auth/me': 'https://llmgateway-production.up.railway.app',
+      '/keys': 'https://llmgateway-production.up.railway.app',
+      '/gateway': 'https://llmgateway-production.up.railway.app',
+      '/usage': 'https://llmgateway-production.up.railway.app',
+      '/users': 'https://llmgateway-production.up.railway.app',
+      '/admin': 'https://llmgateway-production.up.railway.app',
     }
   }
 })
