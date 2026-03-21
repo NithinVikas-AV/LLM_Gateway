@@ -16,6 +16,7 @@ from app.services.rate_limiter import(
 )
 from app.services.usage_service import log_usage, calculate_cost
 from app.models.universal_key import UniversalKey
+from app.models.key_permission import KeyPermission
 
 # ── Model → Provider mapping ───────────────────
 MODEL_PROVIDER_MAP = {
@@ -53,6 +54,26 @@ def get_provider_for_model(model: str) -> str:
             detail=f"Unknown model: {model}. Supported: {list(MODEL_PROVIDER_MAP.keys())}"
         )
     return provider
+
+def check_model_access(universal_key_id: str, model: str, db):
+    permissions = db.query(KeyPermission).filter(
+        KeyPermission.universal_key_id == universal_key_id
+    ).all()
+
+    # No quota set at all — block everything
+    if not permissions:
+        raise HTTPException(
+            status_code=403,
+            detail="No quota set for this key. Add model access in your dashboard first."
+        )
+
+    # Quota exists — check if this specific model is allowed
+    allowed_models = [p.model for p in permissions]
+    if model not in allowed_models:
+        raise HTTPException(
+            status_code=403,
+            detail=f"Model '{model}' is not allowed for this key. Allowed: {allowed_models}"
+        )
 
 # ---------- Gemini ------------------------------
 
@@ -137,6 +158,9 @@ async def process_gateway_request(
 
     # 0. Guardrails first — before anything else
     check_guardrails(request.messages)
+
+    # 0.5 Model access check — NEW
+    check_model_access(str(universal_key.id), request.model, db)
 
     # 1. Run all rate limit checks before doing anything
     check_and_increment_rpm(str(universal_key.id), request.model, db)
