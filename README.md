@@ -123,6 +123,9 @@ service 4: redis → Redis on port 6379
 
 * usage_logs - every single API call through your gateway writes one row here. This is your audit trail, your billing data, and your analytics source all in one. Never delete from this table — it's append-only.
 
+# Roles:
+![alt text](Architecture_images/Roles.png)
+
 
 # Packages and its Uses for this Projects:
 
