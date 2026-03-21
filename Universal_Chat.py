@@ -1,6 +1,6 @@
 import requests
 
-UNIVERSAL_KEY = "llmgw-b9xzdAfQPBrE_Og1qQkkwDC2ZLp-pxbvb78FYF1ZsV8"   # paste your universal key
+UNIVERSAL_KEY = "llmgw-FTkg1b7zZHu4hzo6-9PARHbjhWITyyoirzOtu2yXTbA"   # paste your actual key
 BASE_URL = "http://localhost:8000"
 
 response = requests.post(
@@ -8,13 +8,9 @@ response = requests.post(
     headers={"x-api-key": UNIVERSAL_KEY},
     json={
         "model": "llama-3.3-70b-versatile",
-        "messages": [
-            {"role": "user", "content": "Say hello in one sentence"}
-        ]
+        "messages": [{"role": "user", "content": "Say hello"}]
     }
 )
 
-data = response.json()
-print("Reply:   ", data["content"])
-print("Tokens:  ", data["input_tokens"] + data["output_tokens"])
-print("Cost:    $", data["cost_usd"])
+print("Status:", response.status_code)
+print("Response:", response.text)   # use .text not .json() so we see the raw error
