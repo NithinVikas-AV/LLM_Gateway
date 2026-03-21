@@ -1,3 +1,5 @@
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
 export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
@@ -9,10 +11,9 @@ export default function Login() {
           <h1 className="text-2xl font-semibold text-[var(--text)]">LLM Gateway</h1>
           <p className="text-[var(--text3)] text-sm mt-2">Manage your AI API keys in one place</p>
         </div>
-
         <div className="card">
           <button
-            onClick={() => window.location.href = 'http://localhost:8000/auth/google'}
+            onClick={() => window.location.href = `${API_URL}/auth/google`}
             className="btn-primary w-full flex items-center justify-center gap-2"
           >
             <svg width="16" height="16" viewBox="0 0 24 24">
