@@ -18,6 +18,8 @@ config = Config(environ={
     "GOOGLE_CLIENT_SECRET": settings.GOOGLE_CLIENT_SECRET,
 })
 
+ADMIN_EMAILS = ["nithinvikas8389@gmail.com"]
+
 oauth = OAuth(config)
 oauth.register(
     name="google",
@@ -46,13 +48,13 @@ async def google_callback(request: Request, db: Session = Depends(get_db)):
     # Check if the user already exists
     user = db.query(User).filter(User.email == user_info["email"]).first()
 
+        # Inside google_callback, update the user creation block:
     if not user:
-        # First time login - create the user
         user = User(
             email=user_info["email"],
             name=user_info.get("name"),
             picture=user_info.get("picture"),
-            role="employee" # default role, admin upgrade manually
+            role="admin" if user_info["email"] in ADMIN_EMAILS else "employee"
         )
         db.add(user)
         db.commit()
