@@ -129,18 +129,17 @@ service 4: redis → Redis on port 6379
 
 # Packages and its Uses for this Projects:
 
-| Package           | Purpose                                             |
-| ----------------- | --------------------------------------------------- |
-| `fastapi`         | The web framework                                   |
-| `uvicorn`         | The server that runs FastAPI                        |
-| `sqlalchemy`      | ORM — interact with PostgreSQL using Python         |
-| `alembic`         | Database migrations                                 |
-| `psycopg2-binary` | PostgreSQL driver (required by SQLAlchemy)          |
-| `python-dotenv`   | Loads environment variables from `.env` file        |
-| `cryptography`    | AES-256 encryption/decryption for provider keys     |
-| `python-jose`     | Create and verify JWT tokens                        |
-| `passlib`         | Password hashing utilities                          |
-| `httpx`           | Make async HTTP requests (e.g., OpenAI/Gemini APIs) |
+| Component     | Technology                                                               |
+| ------------- | ------------------------------------------------------------------------ |
+| `Frontend`      | React 18, Vite, Tailwind CSS, shadcn/ui, Zustand, Recharts, Lucide Icons |
+| `Backend`       | FastAPI, SQLAlchemy ORM, Pydantic, Alembic                               |
+| `Database`      | PostgreSQL (5 tables)                                                    |
+| `Cache`         | Redis                                                                    |
+| `Auth`          | Google OAuth 2.0 → JWT tokens                                            |
+| `Encryption`    | AES-256-CBC, SHA-256                                                     |
+| `LLM Providers` | Google Gemini, Groq                                                      |
+| `Deployment`    | Docker Compose, Railway, GitHub Actions CI/CD                            |
+
 
 
 # Run Alembic to create all tables in your pgAdmin database:
