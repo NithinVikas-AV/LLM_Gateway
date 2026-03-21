@@ -18,7 +18,11 @@ app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
 # CORS - allow React Frontend to talk to this backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "https://llmgateway-production.up.railway.app",
+        "https://your-frontend-railway-url.up.railway.app"  # add after you get it
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
