@@ -1,5 +1,6 @@
 import api from './client'
 
-export const getUsers = () => api.get('/users/')
-export const updateRole = (userId, role) => api.patch(`/users/${userId}/role`, { role })
-export const deactivateUser = (userId) => api.patch(`/users/${userId}/deactivate`)
+export const getUsers = () => api.get('/admin/users')
+export const deactivateUser = (userId) => api.patch(`/admin/users/${userId}/deactivate`)
+export const activateUser = (userId) => api.patch(`/admin/users/${userId}/activate`)
+export const getAllUsageSummary = () => api.get('/admin/usage')

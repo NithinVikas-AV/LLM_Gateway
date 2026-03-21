@@ -10,3 +10,4 @@ export const revokeUniversalKey = (id) => api.delete(`/keys/universal/${id}`)
 
 export const setPermission = (keyId, data) => api.post(`/keys/universal/${keyId}/permissions`, data)
 export const getPermissions = (keyId) => api.get(`/keys/universal/${keyId}/permissions`)
+export const deletePermission = (keyId, model) => api.delete(`/keys/universal/${keyId}/permissions/${model}`)
