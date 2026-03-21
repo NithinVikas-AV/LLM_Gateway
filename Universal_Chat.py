@@ -1,6 +1,6 @@
 import requests
 
-UNIVERSAL_KEY = "llmgw-FTkg1b7zZHu4hzo6-9PARHbjhWITyyoirzOtu2yXTbA"   # paste your actual key
+UNIVERSAL_KEY = "llmgw-gp6aSQ7bUH0dGnnF93JN940bprI7cLn_TlvmeuW0XEY"
 BASE_URL = "http://localhost:8000"
 
 response = requests.post(
@@ -12,5 +12,5 @@ response = requests.post(
     }
 )
 
-print("Status:", response.status_code)
-print("Response:", response.text)   # use .text not .json() so we see the raw error
+data = response.json()    
+print(data["content"])
