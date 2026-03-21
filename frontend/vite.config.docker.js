@@ -12,6 +12,10 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
+    allowedHosts: [
+      'llmgateway-production-e66c.up.railway.app',
+      'localhost'
+    ],
     proxy: {
       '/auth/google': 'https://llmgateway-production.up.railway.app',
       '/auth/callback': 'https://llmgateway-production.up.railway.app',
